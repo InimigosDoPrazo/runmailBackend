@@ -2,6 +2,8 @@ package com.runmail.runmail.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.runmail.runmail.emailDTO.EmailRequestDTO;
+import com.runmail.runmail.emailDTO.EmailResponseDTO;
 import com.runmail.runmail.model.Email;
 import com.runmail.runmail.repository.EmailRepository;
 import jakarta.validation.ValidationException;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,8 +66,12 @@ public class EmailService {
             throw new ValidationException("Limite de envio de emails atingido ou mensagem repetida detectada.");
         }
 
+        // Define a data de envio atual
+        email.setDate(new Date());
+
         return emailRepository.save(email); // Salva no repositório normal se não for spam
     }
+
 
     // Verifica se é possível enviar o email (limite de 3 emails a cada 10 minutos e bloqueia mensagens repetidas)
     private boolean canSendEmail(Email email) {
@@ -158,7 +165,23 @@ public class EmailService {
     private List<Email> filterSpam(List<Email> emails) {
         return emails.stream().filter(email -> !isSpam(email)).toList();
     }
+
+    // Método para converter EmailRequestDTO para Email (Entidade)
+    public static Email convertToEntity(EmailRequestDTO emailRequestDTO) {
+        return new Email(null, emailRequestDTO.subject(), emailRequestDTO.sender(), emailRequestDTO.body(), null, false, false);
+    }
+
+    // Método para converter Email (Entidade) para EmailRequestDTO
+    public static EmailRequestDTO convertToRequestDto(Email email) {
+        return new EmailRequestDTO(email.getSubject(), email.getSender(), email.getBody());
+    }
+
+    public static EmailResponseDTO convertToResponseDto(Email email) {
+        return new EmailResponseDTO(email.getSubject(), email.getSender(), email.getBody(), email.getDate());
+    }
+
 }
+
 
 
 
