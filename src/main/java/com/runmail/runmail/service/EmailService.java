@@ -10,8 +10,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class EmailService {
@@ -22,7 +27,29 @@ public class EmailService {
     @Autowired
     private MongoTemplate mongoTemplate; // Usado para salvar diretamente na coleção 'spam'
 
-    // Método para enviar emails com validação de spam
+    // Usado para rastrear emails enviados recentemente (últimos 10 minutos)
+    private final Map<String, List<EmailSentRecord>> recentEmailRecords = new ConcurrentHashMap<>();
+
+    // Classe para armazenar informações sobre emails enviados recentemente
+    private static class EmailSentRecord {
+        private final String bodyHash; // Hash do corpo do email para detectar duplicatas
+        private final LocalDateTime timestamp; // Timestamp do envio
+
+        public EmailSentRecord(String bodyHash, LocalDateTime timestamp) {
+            this.bodyHash = bodyHash;
+            this.timestamp = timestamp;
+        }
+
+        public String getBodyHash() {
+            return bodyHash;
+        }
+
+        public LocalDateTime getTimestamp() {
+            return timestamp;
+        }
+    }
+
+    // Método para enviar emails com validação de spam e controle de taxa
     public Email sendEmail(Email email) {
         validateEmail(email);
 
@@ -31,7 +58,42 @@ public class EmailService {
             throw new ValidationException("Email identificado como spam e não foi enviado.");
         }
 
+        // Verifica e atualiza o controle de taxa e mensagens repetidas
+        if (!canSendEmail(email)) {
+            throw new ValidationException("Limite de envio de emails atingido ou mensagem repetida detectada.");
+        }
+
         return emailRepository.save(email); // Salva no repositório normal se não for spam
+    }
+
+    // Verifica se é possível enviar o email (limite de 3 emails a cada 10 minutos e bloqueia mensagens repetidas)
+    private boolean canSendEmail(Email email) {
+        String recipient = email.getSender();
+        String bodyHash = String.valueOf(email.getBody().hashCode());
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+
+        recentEmailRecords.putIfAbsent(recipient, new ArrayList<>());
+        List<EmailSentRecord> emailRecords = recentEmailRecords.get(recipient);
+
+        // Remove registros antigos (mais de 10 minutos)
+        emailRecords.removeIf(record -> ChronoUnit.MINUTES.between(record.getTimestamp(), now) > 10);
+
+        // Verifica emails repetidos (mesmo corpo)
+        boolean isDuplicate = emailRecords.stream().anyMatch(record -> record.getBodyHash().equals(bodyHash));
+        if (isDuplicate) {
+            System.out.println("Email duplicado detectado e bloqueado: " + email.getSubject());
+            return false;
+        }
+
+        // Verifica o limite de 3 emails a cada 10 minutos
+        if (emailRecords.size() >= 3) {
+            System.out.println("Limite de envio para " + recipient + " atingido.");
+            return false;
+        }
+
+        // Se não for repetido e estiver dentro do limite, adiciona o email ao registro
+        emailRecords.add(new EmailSentRecord(bodyHash, now));
+        return true;
     }
 
     // Método para retornar os emails enviados pelo aplicativo, sem validação de spam
@@ -96,7 +158,7 @@ public class EmailService {
     private List<Email> filterSpam(List<Email> emails) {
         return emails.stream().filter(email -> !isSpam(email)).toList();
     }
-
 }
+
 
 
