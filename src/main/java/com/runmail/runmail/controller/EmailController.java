@@ -2,40 +2,40 @@ package com.runmail.runmail.controller;
 
 import com.runmail.runmail.model.Email;
 import com.runmail.runmail.service.EmailService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/emails")
+@RequestMapping("api/runmail")
 public class EmailController {
 
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/listaDeEmailsMock")
-    public List<Email> getAllEmailsMock() {
-        return emailService.getAllEmailsMock();
+    // Endpoint para obter todos os emails enviados pelo app
+    @GetMapping("/sent")
+    public List<Email> getEmailsSentByApp() {
+        return emailService.getEmailsSentByApp();
     }
 
-    @GetMapping("mock/{id}")
-    public Email getEmailMockById(@PathVariable String id) {
-        return emailService.getEmailMockById(id);
+    // Endpoint para obter emails mockados, já filtrando os que não são spam
+    @GetMapping("/mock")
+    public List<Email> getMockedEmails() {
+        return emailService.getMockedEmails();
     }
 
-    @GetMapping("/Enviados")
-    public List<Email> getAllEmails() {
-        return emailService.getAllEmails();
+    // Endpoint para obter apenas os emails identificados como spam
+    @GetMapping("/spam")
+    public List<Email> getSpamEmails() {
+        return emailService.getSpamEmails();
     }
 
-    @GetMapping("/Enviados/{id}")
-    public Email getEmailById(@PathVariable String id) {
-        return emailService.getEmailById(id);
-    }
-
-    @PostMapping("/enviar")
-    public Email sendEmail(@RequestBody Email email) {
+    // Endpoint para enviar um email (com validação de spam)
+    @PostMapping("/send")
+    public Email sendEmail(@Valid @RequestBody Email email) {
         return emailService.sendEmail(email);
     }
 }

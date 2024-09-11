@@ -1,0 +1,82 @@
+[
+  {
+    "subject": "Você ganhou um prêmio!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Oferta imperdível!",
+    "sender": "promo@domain.com",
+    "body": "Aproveite agora e ganhe descontos exclusivos!",
+    "date": "2024-09-06",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 1",
+    "sender": "user1@domain.com",
+    "body": "Conteúdo normal 1",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Ganhe grátis!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Oferta grátis!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Ganhe agora! Promoção imperdível!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 2",
+    "sender": "user2@domain.com",
+    "body": "Conteúdo normal 3",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 3",
+    "sender": "user3@domain.com",
+    "body": "Conteúdo normal 3",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 4",
+    "sender": "user4@domain.com",
+    "body": "Conteúdo normal 4",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 5",
+    "sender": "user5@domain.com",
+    "body": "Conteúdo normal 5",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  }
+]

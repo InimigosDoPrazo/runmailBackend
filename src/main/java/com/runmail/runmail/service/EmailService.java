@@ -1,12 +1,16 @@
 package com.runmail.runmail.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.runmail.runmail.model.Email;
 import com.runmail.runmail.repository.EmailRepository;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,44 +19,84 @@ public class EmailService {
     @Autowired
     private EmailRepository emailRepository;
 
+    @Autowired
+    private MongoTemplate mongoTemplate; // Usado para salvar diretamente na coleção 'spam'
 
-    public List<Email> getAllEmails() {
-        return emailRepository.findAll();
-    }
-
-    public Email getEmailById(String id) {
-        return emailRepository.findById(id).orElse(null);
-    }
-
+    // Método para enviar emails com validação de spam
     public Email sendEmail(Email email) {
-        return emailRepository.save(email);
+        validateEmail(email);
+
+        // Bloqueia o envio se o email for identificado como spam
+        if (isSpam(email)) {
+            throw new ValidationException("Email identificado como spam e não foi enviado.");
+        }
+
+        return emailRepository.save(email); // Salva no repositório normal se não for spam
     }
 
-    // Lista de emails mockada
-    private List<Email> mockEmails = Arrays.asList(
-            new Email("1", "Assunto ", "remetente1@example.com", "Corpo do email 1", LocalDate.now(), false, true),
-            new Email("2", "Assunto ", "remetente2@example.com", "Corpo do email 2", LocalDate.now().minusDays(1), true, false),
-            new Email("3", "Assunto ", "remetente3@example.com", "Corpo do email 3", LocalDate.now().minusDays(2), false, false),
-            new Email("4", "Assunto ", "remetente4@example.com", "Corpo do email 4", LocalDate.now().minusDays(3), true, true),
-            new Email("5", "Assunto ", "remetente5@example.com", "Corpo do email 5", LocalDate.now(), false, true),
-            new Email("6", "Assunto ", "remetente6@example.com", "Corpo do email 6", LocalDate.now().minusDays(1), true, false),
-            new Email("7", "Assunto ", "remetente7@example.com", "Corpo do email 7", LocalDate.now().minusDays(2), false, false),
-            new Email("8", "Assunto ", "remetente8@example.com", "Corpo do email 8", LocalDate.now().minusDays(3), true, true),
-            new Email("9", "Assunto ", "remetente9@example.com", "Corpo do email 9", LocalDate.now().minusDays(2), false, false),
-            new Email("10", "Assunto ", "remetente10@example.com", "Corpo do email 10", LocalDate.now().minusDays(3), true, true)
-    );
+    // Método para retornar os emails enviados pelo aplicativo, sem validação de spam
+    public List<Email> getEmailsSentByApp() {
+        return emailRepository.findAll(); // Retorna todos os emails enviados
+    }
 
-    public List<Email> getAllEmailsMock() {
-        // Aqui estamos retornando a lista mockada em vez de consultar o banco de dados
+    public List<Email> getSpamEmails() {
+        return mongoTemplate.findAll(Email.class, "spam");  // Consulta diretamente na coleção 'spam'
+    }
+
+    // Gera mock e redireciona os spams para a coleção spam
+    public List<Email> getMockedEmails() {
+        List<Email> mockEmails = generateMockEmails();
+        return filterSpam(mockEmails);
+    }
+
+    // Gera emails mockados lendo de um arquivo JSON e redireciona os spams
+    private List<Email> generateMockEmails() {
+        List<Email> mockEmails = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            // Carrega o arquivo JSON de mock emails
+            InputStream inputStream = getClass().getResourceAsStream("/mockEmails.json");
+            List<Email> emailsFromFile = mapper.readValue(inputStream, new TypeReference<List<Email>>() {
+            });
+
+            // Valida e redireciona os spams
+            for (Email email : emailsFromFile) {
+                validateEmail(email);
+
+                if (isSpam(email)) {
+                    // Se for spam, salva na coleção de spam
+                    mongoTemplate.save(email, "spam");
+                    System.out.println("Email identificado como spam e salvo: " + email.getSubject());
+                } else {
+                    mockEmails.add(email);  // Adiciona à lista se não for spam
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao carregar e-mails mockados: " + e.getMessage());
+        }
+
         return mockEmails;
     }
 
-    public Email getEmailMockById(String id) {
-        // Simulando a busca na lista mockada
-        return mockEmails.stream()
-                .filter(email -> email.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    // Método para validar email
+    private void validateEmail(Email email) {
+        if (email.getSubject().isEmpty() || email.getSender().isEmpty() || email.getBody().isEmpty()) {
+            throw new ValidationException("Subject, sender, and body cannot be empty.");
+        }
+    }
+
+    // Método para verificar se um email é spam
+    private boolean isSpam(Email email) {
+        String bodyLower = email.getBody().toLowerCase();
+        return bodyLower.contains("prêmio") || bodyLower.contains("ganhe") || bodyLower.contains("grátis");
+    }
+
+    // Método para filtrar emails não spam
+    private List<Email> filterSpam(List<Email> emails) {
+        return emails.stream().filter(email -> !isSpam(email)).toList();
     }
 
 }
+
+
