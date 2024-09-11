@@ -10,17 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Document(collection = "user_preferences")
 public class UserPreferences {
+
     @Id
     private String userId;
-    private String theme;
-    private String language;
+
+    private Preferences preferences;
+
     private Notifications notifications;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Notifications {
-        private boolean email;
-        private boolean sms;
-    }
 }
