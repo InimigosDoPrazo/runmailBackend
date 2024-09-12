@@ -118,6 +118,15 @@ public class EmailService {
         return filterSpam(mockEmails);
     }
 
+    // Método para buscar emails mockados por sender (não spam)
+    public List<EmailResponseDTO> getMockedEmailsBySender(String sender) {
+        List<Email> mockEmails = getMockedEmails(); // Obtem emails mockados (já filtrados por não-spam)
+        return mockEmails.stream()
+                .filter(email -> email.getSender() != null && email.getSender().equals(sender))
+                .map(EmailService::convertToResponseDto)
+                .toList(); // Converter para EmailResponseDTO
+    }
+
     // Gera emails mockados lendo de um arquivo JSON e redireciona os spams
     private List<Email> generateMockEmails() {
         List<Email> mockEmails = new ArrayList<>();
@@ -146,6 +155,12 @@ public class EmailService {
         }
 
         return mockEmails;
+    }
+
+    // Método para buscar emails enviados por sender (remetente)
+    public List<EmailResponseDTO> getEmailsBySender(String sender) {
+        List<Email> emails = emailRepository.findBySender(sender);
+        return emails.stream().map(EmailService::convertToResponseDto).toList(); // Converter para EmailResponseDTO
     }
 
     // Método para validar email

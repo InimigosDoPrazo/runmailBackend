@@ -6,8 +6,10 @@ import com.runmail.runmail.model.Email;
 import com.runmail.runmail.service.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,18 @@ public class EmailController {
     public List<EmailResponseDTO> getEmailsSentByApp() {
         List<Email> emails = emailService.getEmailsSentByApp();
         return emails.stream().map(EmailService::convertToResponseDto).toList(); // Converter para EmailResponseDTO
+    }
+
+    // Endpoint para buscar emails enviados por sender (remetente)
+    @GetMapping("/sent/by-sender")
+    public List<EmailResponseDTO> getEmailsBySender(@RequestParam String sender) {
+        return emailService.getEmailsBySender(sender);
+    }
+
+    // Endpoint para buscar emails mockados (não spam) por sender (remetente)
+    @GetMapping("/mock/by-sender")
+    public List<EmailResponseDTO> getMockedEmailsBySender(@RequestParam String sender) {
+        return emailService.getMockedEmailsBySender(sender);
     }
 
     // Endpoint para obter emails mockados, já filtrando os que não são spam
