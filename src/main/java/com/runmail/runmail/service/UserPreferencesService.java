@@ -5,6 +5,8 @@ import com.runmail.runmail.repository.UserPreferencesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserPreferencesService {
 
@@ -17,5 +19,9 @@ public class UserPreferencesService {
 
     public UserPreferences updatePreferences(UserPreferences preferences) {
         return preferencesRepository.save(preferences);
+    }
+
+    public List<UserPreferences> getPreferences() {
+        return preferencesRepository.findAll();
     }
 }

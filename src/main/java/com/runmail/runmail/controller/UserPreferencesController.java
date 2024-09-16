@@ -5,6 +5,8 @@ import com.runmail.runmail.service.UserPreferencesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user/preferences")
 public class UserPreferencesController {
@@ -20,5 +22,10 @@ public class UserPreferencesController {
     @PutMapping
     public UserPreferences updatePreferences(@RequestBody UserPreferences preferences) {
         return preferencesService.updatePreferences(preferences);
+    }
+
+    @GetMapping
+    public List<UserPreferences> getPreferences() {
+        return preferencesService.getPreferences();
     }
 }

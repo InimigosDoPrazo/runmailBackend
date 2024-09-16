@@ -13,8 +13,8 @@ public class UserPreferences {
     @Id
     private String userId;
 
-    private Preferences preferences;
-
-    private Notifications notifications;
+    private Boolean theme;
+    private String language;
+    private String name;
 
 }

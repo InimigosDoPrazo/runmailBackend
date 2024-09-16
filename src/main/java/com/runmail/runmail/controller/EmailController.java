@@ -17,42 +17,36 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    // Endpoint para obter todos os emails enviados pelo app
     @GetMapping("/sent")
     public List<EmailResponseDTO> getEmailsSentByApp() {
         List<Email> emails = emailService.getEmailsSentByApp();
-        return emails.stream().map(EmailService::convertToResponseDto).toList(); // Converter para EmailResponseDTO
+        return emails.stream().map(EmailService::convertToResponseDto).toList();
     }
 
-    // Endpoint para buscar emails enviados por sender (remetente)
     @GetMapping("/sent/by-sender")
     public List<EmailResponseDTO> getEmailsBySender(@RequestParam String sender) {
         return emailService.getEmailsBySender(sender);
     }
 
-    // Endpoint para buscar emails mockados (não spam) por sender (remetente)
     @GetMapping("/mock/by-sender")
     public List<EmailResponseDTO> getMockedEmailsBySender(@RequestParam String sender) {
         return emailService.getMockedEmailsBySender(sender);
     }
 
-    // Endpoint para obter emails mockados, já filtrando os que não são spam
     @GetMapping("/mock")
     public List<Email> getMockedEmails() {
         return emailService.getMockedEmails();
     }
 
-    // Endpoint para obter apenas os emails identificados como spam
     @GetMapping("/spam")
     public List<Email> getSpamEmails() {
         return emailService.getSpamEmails();
     }
 
-    // Endpoint para enviar um email (com validação de spam)
     @PostMapping("/send")
     public EmailRequestDTO sendEmail(@Valid @RequestBody EmailRequestDTO emailRequestDTO) {
-        Email email = emailService.sendEmail(EmailService.convertToEntity(emailRequestDTO)); // Converter DTO para entidade
-        return EmailService.convertToRequestDto(email); // Converter para DTO após salvar
+        Email email = emailService.sendEmail(EmailService.convertToEntity(emailRequestDTO));
+        return EmailService.convertToRequestDto(email);
     }
 }
 
