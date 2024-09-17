@@ -14,7 +14,10 @@ public class UserPreferences {
     private String userId;
 
     private Boolean theme;
-    private String language;
+    private Boolean autoSignature;
+    private Boolean notificationsEnabled;
+    private Boolean vibrationEnabled;
+    private String signatureText;
     private String name;
 
 }
