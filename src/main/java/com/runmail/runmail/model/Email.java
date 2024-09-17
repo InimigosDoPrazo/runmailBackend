@@ -1,23 +1,35 @@
 package com.runmail.runmail.model;
 
-import lombok.*;
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDate;
 
+import java.util.Date;
+
+@Document(collection = "emails")
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "emails")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreType()
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Email {
-    @Id
-    private String id; // Usando String como ID no MongoDB
+
+    private String id;
+
     private String subject;
+
     private String sender;
+
     private String body;
-    private LocalDate date;
+
+    private Date date;
+
     private boolean isFavorite;
+
     private boolean isImportant;
 }

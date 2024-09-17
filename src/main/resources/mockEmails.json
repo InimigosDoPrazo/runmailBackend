@@ -1,0 +1,161 @@
+[
+  {
+    "subject": "Você ganhou um prêmio!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Oferta imperdível!",
+    "sender": "promo@domain.com",
+    "body": "Aproveite agora e ganhe descontos exclusivos!",
+    "date": "2024-09-06",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 1",
+    "sender": "user1@domain.com",
+    "body": "Conteúdo normal 1",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Ganhe grátis!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Oferta grátis!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Ganhe agora! Promoção imperdível!",
+    "sender": "promo@domain.com",
+    "body": "Clique aqui para ganhar um prêmio agora!",
+    "date": "2024-09-07",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 2",
+    "sender": "user2@domain.com",
+    "body": "Conteúdo normal 3",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 3",
+    "sender": "user3@domain.com",
+    "body": "Conteúdo normal 3",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 4",
+    "sender": "user4@domain.com",
+    "body": "Conteúdo normal 4",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 5",
+    "sender": "user5@domain.com",
+    "body": "Conteúdo normal 5",
+    "date": "2024-09-05",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 6",
+    "sender": "user6@domain.com",
+    "body": "Conteúdo normal 6",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 7",
+    "sender": "user7@domain.com",
+    "body": "Conteúdo normal 7",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 8",
+    "sender": "user8@domain.com",
+    "body": "Conteúdo normal 8",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },  {
+  "subject": "Email Normal 9",
+  "sender": "user9@domain.com",
+  "body": "Conteúdo normal 9",
+  "date": "2024-09-04",
+  "isFavorite": false,
+  "isImportant": false
+ },
+  {
+    "subject": "Email Normal 10",
+    "sender": "user10@domain.com",
+    "body": "Conteúdo normal 10",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 11",
+    "sender": "user11@domain.com",
+    "body": "Conteúdo normal 11",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 12",
+    "sender": "user12@domain.com",
+    "body": "Conteúdo normal 12",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 13",
+    "sender": "user13@domain.com",
+    "body": "Conteúdo normal 13",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 14",
+    "sender": "user14@domain.com",
+    "body": "Conteúdo normal 14",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  },
+  {
+    "subject": "Email Normal 15",
+    "sender": "user2@domain.com",
+    "body": "Conteúdo normal 15",
+    "date": "2024-09-04",
+    "isFavorite": false,
+    "isImportant": false
+  }
+]
