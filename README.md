@@ -12,7 +12,7 @@ Este repositório contém o backend do aplicativo, desenvolvido com Java 22 e Sp
 ## 🌟 Funcionalidades
 - **📩 Envio e recebimento de emails**: API eficiente para gerenciar a comunicação entre usuários.
 - **🔍 Filtro de spam**: Algoritmo integrado para detectar e bloquear emails indesejados.
-- **⚙️ Gerenciamento de usuários**: CRUD completo para gerenciar dados e preferências de usuários.
+- **⚙️ Gerenciamento de usuários**: Cadastro e Consulta de preferências de usuários.
 
 ## 📲 Como Rodar o Projeto**
 
